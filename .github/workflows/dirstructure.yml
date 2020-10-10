@@ -1,0 +1,62 @@
+# This is a basic workflow to help you get started with Actions
+
+name: check-bootcamp-challenge
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  pull_request:
+    branches: [ master ]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  check:
+    runs-on: [ubuntu-latest]
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - run: echo "::set-env name=SUCCESS::0"
+      - run: echo "::set-env name=FILES::$(git diff --name-only --diff-filter=A origin/master ${{ github.event.pull_request.head.sha }} | tr '\n' ' ')"
+      - run: |
+          echo "Missing solve/flag.txt"
+          echo "::set-env name=SUCCESS::1"
+        if: contains(env.FILES, 'solve/flag.txt') == false
+      - run: |
+          echo "Missing solve/solve.md"
+          echo "::set-env name=SUCCESS::1"
+        if: contains(env.FILES, 'solve/solve.md') == false
+      - run: |
+          echo "Missing dist/description.md"
+          echo "::set-env name=SUCCESS::1"
+        if: contains(env.FILES, 'dist/description.md') == false
+      - run: |
+          echo "Missing dist directory"
+          echo "::set-env name=SUCCESS::1"
+        if: contains(env.FILES, 'dist') == false
+      - run: |
+          echo "Missing src directory"
+          echo "::set-env name=SUCCESS::1"
+        if: contains(env.FILES, 'src') == false
+      - run: |
+          echo "Missing solve directory"
+          echo "::set-env name=SUCCESS::1"
+        if: contains(env.FILES, 'solve') == false
+      - run: |
+          echo "Missing docker-compose.yml"
+          echo "::set-env name=SUCCESS::1"
+        if: contains(env.FILES, 'deploy/') == true && contains(env.FILES, 'deploy/docker-compose.yml') == false
+      - run: |
+          echo "Missing Dockerfile"
+          echo "::set-env name=SUCCESS::1"
+        if: contains(env.FILES, 'deploy/') == true && contains(env.FILES, 'deploy/Dockerfile') == false
+      - run: |
+          echo "Missing xinetd config"
+          echo "::set-env name=SUCCESS::1"
+        if: contains(env.FILES, 'deploy/') == true && contains(env.FILES, 'xinetd') == false
+      - run: exit 1
+        if: env.SUCCESS == '1'
+      - run: exit 0
+        if: env.SUCCESS == '0'
+      
+      
