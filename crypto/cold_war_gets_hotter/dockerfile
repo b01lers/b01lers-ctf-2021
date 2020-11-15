@@ -1,5 +1,42 @@
-from unbuntu:20.04 AS python-dependencies
+from ubuntu:20.04 AS python-dependencies
 
-COPY requirements.txt
+RUN \
+    apt-get update && \
+    apt-get install -y python3-pip
+
+COPY requirements.txt .
 
 RUN pip3 install -r ./requirements.txt
+
+
+from python-dependencies AS xinetd
+
+RUN \
+  apt-get update && \
+  DEBIAN_FRONTEND=noninteractive \
+    apt-get -y install --no-install-recommends \
+      tcpd \
+      xinetd \
+  && \
+  apt-get clean && \
+  rm -rf /var/lib/apt/lists/
+
+# Switch from 'connections per second' rate limiting, since it disables the
+# service completely (potential DoS) to 'maximum instances of service per
+# source IP address' limit. The limit is the same default as for 'cps' (50).
+RUN \
+  sed -i 's/^}$/cps = 0 0\nper_source = 50\n}/' /etc/xinetd.conf && \
+  grep "cps = 0" /etc/xinetd.conf && \
+  grep "per_source = 50" /etc/xinetd.conf && \
+  nl /etc/xinetd.conf
+
+COPY ./docker_source /challenge/
+
+RUN cp /challenge/xinetd-setup /etc/xinetd.d/
+
+RUN service xinetd restart
+
+
+
+
+

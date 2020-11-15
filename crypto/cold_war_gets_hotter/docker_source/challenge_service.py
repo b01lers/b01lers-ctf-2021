@@ -2,8 +2,11 @@
 
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad 
+import os
 import re
 import sys
+
+BASE_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
 
 IU_MANIFESTO = '''
 "Indiana, Our Indiana"
@@ -46,8 +49,8 @@ Missile Options:
 
 TARGET_LATITUDE = b'39.1'
 TARGET_LONGITUDE = b'-86.5'
-KEY = open('key', 'rb').read()
-FLAG = open('flag', 'r').read()
+KEY = open(os.path.join(BASE_DIRECTORY, 'key'), 'rb').read()
+FLAG = open(os.path.join(BASE_DIRECTORY, 'flag'), 'r').read()
 
 
 def decrypt_message(ciphertext):

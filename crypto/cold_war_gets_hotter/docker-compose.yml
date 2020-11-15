@@ -1,0 +1,9 @@
+version: "3"
+services:
+    challenge:
+        build:
+            context: .
+            dockerfile: dockerfile
+        tty: true
+        ports:
+            - "25000:25000"
