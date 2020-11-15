@@ -50,7 +50,7 @@ Missile Options:
 TARGET_LATITUDE = b'39.1'
 TARGET_LONGITUDE = b'-86.5'
 KEY = open(os.path.join(BASE_DIRECTORY, 'key'), 'rb').read()
-FLAG = open(os.path.join(BASE_DIRECTORY, 'flag'), 'r').read()
+FLAG = open(os.path.join(BASE_DIRECTORY, 'flag.txt'), 'r').read()
 
 
 def decrypt_message(ciphertext):
@@ -116,4 +116,5 @@ def receive_message():
 
 
 receive_message()
+exit(0)
 
