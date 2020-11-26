@@ -6,7 +6,7 @@ from Crypto.Util.Padding import pad
 
 key = open('key', 'rb').read()
 
-purdue_coordinates = b'38.9,-86.3'
+purdue_coordinates = b'40.4,-86.9'
 
 plaintext = open('plaintext', 'rb').read()
 

@@ -16,10 +16,8 @@ def xor_block(a, b):
     return [a[x] ^ b[x] for x in range(len(a))] 
 
 iu_coordinates = b'39.1,-86.5'
-purdue_coordinates = b'38.9,-86.3'
+purdue_coordinates = b'40.4,-86.9'
 base_xor = xor_block(iu_coordinates, purdue_coordinates)
-
-attempts = 0
 
 
 def get_block(source, block_num):
@@ -47,7 +45,6 @@ def send_text(r, text):
 def check_success(response):
     if b'Coordinates have not been altered' not in response:
         print(response)
-        print(attempts)
         exit(0)
 
 
@@ -63,7 +60,6 @@ for block in range((len(ciphertext) // 32) - 1):
         
         y = receive_until_prompt(conn)
         check_success(y)
-        attempts += 1
 
     
 print("unsuccessful :(")
