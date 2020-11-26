@@ -5,7 +5,7 @@ import binascii
 host = '127.0.0.1'
 port = 25000
 
-context.log_level = 'debug'
+# context.log_level = 'debug'
 
 conn = remote(host, port)
 
