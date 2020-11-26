@@ -19,6 +19,7 @@ iu_coordinates = b'39.1,-86.5'
 purdue_coordinates = b'40.4,-86.9'
 base_xor = xor_block(iu_coordinates, purdue_coordinates)
 
+print(base_xor)
 
 def get_block(source, block_num):
     return source[block_num * 32: (block_num + 1) * 32]
