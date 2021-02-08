@@ -1,0 +1,23 @@
+version: "3.7"
+services:
+    pwn:
+        container_name: pwn
+        build:
+            dockerfile: ./deploy/Dockerfile
+            context: ../
+        logging:
+            driver: "json-file"
+        ports:
+            - "1337:1337"
+    pwn-build:
+        container_name: pwn-build
+        build:
+            dockerfile: ./deploy/Dockerfile-build
+            context: ../
+        logging:
+            driver: "json-file"
+        volumes:
+            - build:/home/pwn/build
+volumes:
+    build:
+        name: pwn-build
