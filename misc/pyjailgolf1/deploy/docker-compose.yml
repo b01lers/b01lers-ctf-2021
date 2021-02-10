@@ -1,0 +1,11 @@
+version: "3.7"
+services:
+    pyjailgolf1:
+        container_name: pyjailgolf1
+        build:
+            dockerfile: ./deploy/Dockerfile
+            context: ../
+        logging:
+            driver: "json-file"
+        ports:
+            - "1337:1337"
