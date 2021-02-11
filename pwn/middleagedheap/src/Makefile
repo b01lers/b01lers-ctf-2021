@@ -1,2 +1,2 @@
-pwn: pwn.c
-	clang pwn.c -fPIE -pie -Wl,-z,relro -g -o pwn
+middleagedheap: middleagedheap.c
+	clang middleagedheap.c -fPIE -pie -Wl,-z,relro -g -o middleagedheap
