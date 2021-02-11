@@ -1,2 +1,2 @@
 #!/bin/bash
-cd /home/pwn/ && ./pwn
+cd /home/middleagedheap/ && ./middleagedheap

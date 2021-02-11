@@ -6,7 +6,7 @@ RUN apt-get install -y libc6-dbg build-essential
 RUN apt-get install -y clang
 
 # Change example to the name of your challenge.
-ENV USER pwn
+ENV USER middleagedheap
 
 WORKDIR /home/$USER
 

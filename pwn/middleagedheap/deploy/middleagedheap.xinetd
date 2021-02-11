@@ -1,4 +1,4 @@
-service pwn
+service middleagedheap
 {
         disable                 = no
         socket_type     = stream
@@ -9,12 +9,12 @@ service pwn
         log_on_failure  = HOST
 
         # Change the username to the name of your challenge
-        user                    = pwn
+        user                    = middleagedheap
 
         bind                    = 0.0.0.0
 
         # Change the server to your executable
-        server                  = /home/pwn/wrapper.sh
+        server                  = /home/middleagedheap/wrapper.sh
 
         type                    = UNLISTED
 

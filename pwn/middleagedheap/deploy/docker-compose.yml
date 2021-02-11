@@ -1,7 +1,7 @@
 version: "3.7"
 services:
-    pwn:
-        container_name: pwn
+    middleagedheap:
+        container_name: middleagedheap
         build:
             dockerfile: ./deploy/Dockerfile
             context: ../
@@ -9,15 +9,15 @@ services:
             driver: "json-file"
         ports:
             - "1337:1337"
-    pwn-build:
-        container_name: pwn-build
+    middleagedheap-build:
+        container_name: middleagedheap-build
         build:
             dockerfile: ./deploy/Dockerfile-build
             context: ../
         logging:
             driver: "json-file"
         volumes:
-            - build:/home/pwn/build
+            - build:/home/middleagedheap/build
 volumes:
     build:
-        name: pwn-build
+        name: middleagedheap-build

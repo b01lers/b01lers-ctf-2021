@@ -9,7 +9,7 @@ RUN touch /var/log/xinetdlog
 EXPOSE 1337
 
 # Change example to the name of your challenge.
-ENV USER pwn
+ENV USER middleagedheap
 
 WORKDIR /home/$USER
 
