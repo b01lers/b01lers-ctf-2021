@@ -1,2 +1,2 @@
 dev contains the documents I used to develop the challenge
-release contains the files that the players will actually get. I have also created the zip file that they can use.
+dist contains the files that the players will actually get. I have also created the zip file that they can use.
