@@ -56,3 +56,7 @@ node_modules/
 
 # .idea for jet brains ide
 .idea/
+
+# pico8 challenge ignores
+1000words.png
+p8png
