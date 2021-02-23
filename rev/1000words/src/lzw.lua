@@ -106,10 +106,11 @@ end
 -- compressed, dict = compress('TOBEORNOTTOBEORTOBEORNOT')
 compressed, dict = compress('bctf{wordonswordsononwordswordswords}')
 -- compressed, dict = compress('picturethispicture')
--- for i=1,#compressed do
---	io.write(string.format('%02X ', compressed[i]))
--- end
--- print("")
+for i=1,#compressed do
+	io.write(string.format('%02X', compressed[i]))
+	if (i - 1) % 2 == 1 then io.write(' ') end
+end
+print("")
 
 -- for k, v in spairs(dict) do
 --	print(k, v)
