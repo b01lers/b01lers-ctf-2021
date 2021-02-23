@@ -17,6 +17,7 @@ all: p8png
 	@echo "building cart"
 	./p8png cart.p8.png cart_image.png 1000words.png
 	exiv2 -m exif.txt 1000words.png
+	mv 1000words.png ../dist
 
 OBJS = $(patsubst %,$(OBJDIR)/%,$(_OBJS))
 
