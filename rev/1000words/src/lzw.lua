@@ -48,6 +48,7 @@ function compress(uncompressed)
 			dictionary[wc] = code
 			code = code + 1
 			w = ""
+			wc = ""
 		else
 			w = wc
 		end
@@ -66,9 +67,7 @@ function uncompress(compressed)
 
 	while i < #compressed+1 do
 		input_code = compressed[i]
-		print(input_code)
 		ichar = compressed[i + 1]
-		print(ichar)
 		if ichar == nil then
 			uncompressed = uncompressed .. dictionary[input_code]
 			break
@@ -89,23 +88,43 @@ function uncompress(compressed)
 	return uncompressed, dictionary
 end
 
+local charset = {}
+for i = 48,  57 do table.insert(charset, string.char(i)) end
+-- for i = 65,	90 do table.insert(charset, string.char(i)) end
+for i = 97, 122 do table.insert(charset, string.char(i)) end
+
+function string.random(length)
+	math.randomseed(os.time())
+
+	if length > 0 then
+		return string.random(length - 1) .. charset[math.random(1, #charset)]
+	else
+		return ""
+	end
+end
+
 -- compressed, dict = compress('TOBEORNOTTOBEORTOBEORNOT')
 compressed, dict = compress('bctf{wordonswordsononwordswordswords}')
 -- compressed, dict = compress('picturethispicture')
-for i=1,#compressed do
-	io.write(string.format('%02X ', compressed[i]))
-end
-print("")
+-- for i=1,#compressed do
+--	io.write(string.format('%02X ', compressed[i]))
+-- end
+-- print("")
 
-for k, v in spairs(dict) do
-	print(k, v)
-end
+-- for k, v in spairs(dict) do
+--	print(k, v)
+-- end
 
-uncompressed, dict = uncompress(compressed)
 -- uncompressed, dict = uncompress({0, 112, 0, 105, 0, 99, 0, 116, 0, 117, 0, 114, 0, 101, 4, 104, 2, 115, 1, 105, 3, 116, 5, 114})
-print(uncompressed)
-
-for k, v in spairs(dict) do
-	print(k, v)
+-- print(uncompressed)
+for i=1,13 do
+	input = string.random(i)
+	compressed, dict = compress(input)
+	uncompressed, dict = uncompress(compressed)
+	print(input==uncompressed)
 end
+
+-- for k, v in spairs(dict) do
+--	print(k, v)
+-- end
 
