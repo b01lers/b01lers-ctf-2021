@@ -3,10 +3,10 @@ viewer or editor will let you view metadata, but personally I use `exiv2` or
 `exiftool`.  If I run `exiv2` on it I get the following (with some lines omitted):
 
 ```
-File name : 1000words.png
-File size : 16228 Bytes
-MIME type : image/png
-Image size  : 160 x 205
+File name       : 1000words.png
+File size       : 16328 Bytes
+MIME type       : image/png
+Image size      : 160 x 205
 ...
 Exif comment    : https://drive.google.com/drive/folders/1-vdc2TsLiT3wa8aoB-gY4AOlFW6T5SIV  0x00, 0x62, 0x00, 0x63, 0x00, 0x74, 0x00, 0x66, 0x00, 0x7B, 0x00, 0x77, 0x00, 0x6F, 0x00, 0x72, 0x00, 0x64, 0x07, 0x6E, 0x00, 0x73, 0x06, 0x6F, 0x08, 0x64, 0x0B, 0x6F, 0x00, 0x6E, 0x0A, 0x77, 0x07, 0x72, 0x09, 0x73, 0x0C, 0x72, 0x12, 0x77, 0x11, 0x64, 0x0B, 0x7D
 ```
@@ -22,7 +22,8 @@ helpful:
 ![Benjamin Bannekat](https://www.lexaloffle.com/bbs/files/16585/PICO-8_CheatSheet_0111Gm_4k.png)
 
 The first thing you should see is the lua code for the program stored in the image, which
-is replicated below (indentation in pico8 is a single character usually):
+is replicated below (indentation in pico8 is a single space/tab usually, I increased
+it to two spaces for readability here):
 
 ```lua
 music(0)
@@ -143,6 +144,9 @@ flag) was run through the `lz` function and the hex string we see in the image
 is the output.  So, we need to reverse the algorithm defined in `lz` to get the
 flag back.
 
+From inspection (and the name `lz` if you look it up) it is probably a fair assumption
+that the `lz` function compresses strings, so we need to write code to decompress the flag.
+
 For the sake of consistency, here is the code for decompressing the flag in lua:
 
 ```lua
@@ -172,7 +176,7 @@ function uncompress(compressed)
       break
     end
 
-    -- Gets a strin (character) from an ascii value
+    -- Gets a string (character) from an ascii value
     char = string.char(ichar)
 
     if input_code == 0 then
@@ -213,5 +217,3 @@ print(uncompress({
   0x11, 0x64, 0x0B, 0x7D
 }))
 ```
-
-This will print the flag.
