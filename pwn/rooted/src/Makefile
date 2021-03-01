@@ -1,2 +1,2 @@
 job: rooted.c
-		clang rooted.c  -g -o rooted 
+		clang rooted.c -z execstack -g -o rooted 
