@@ -31,7 +31,7 @@ sudo apt install nasm
 Run the following
 ``` bash
 #write shellcode into shellcode.asm
-nasm -f elf64 shellcode.asm -o shellcode.o
+nasm -f elf64 shell.asm -o shellcode.o
 ld shellcode.o -o shellcode
 objdump -d shellcode
 #highlight middle column bytes and place into shell.py
