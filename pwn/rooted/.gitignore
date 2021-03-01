@@ -3,3 +3,4 @@ commands.gdb
 peda*
 shellcode.o
 shellcode
+rooted
