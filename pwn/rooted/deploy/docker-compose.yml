@@ -12,4 +12,3 @@ services:
     #TODO: remove
     stdin_open: true
     tty: true
-

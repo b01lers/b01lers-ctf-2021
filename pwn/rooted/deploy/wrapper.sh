@@ -4,4 +4,4 @@
 cd /home/rooted
 
 #drop into the jail!
-fakechroot -e "export PS1='>'" chroot ./jail /bin/zsh -i +m
+fakechroot -e "clearing env ;)" chroot ./jail /bin/zsh -i +m

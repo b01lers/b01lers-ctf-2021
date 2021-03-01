@@ -8,20 +8,20 @@ FROM ubuntu:20.04
 #TODO: finish with software needed
 
 RUN apt-get update && \
-    apt-get install -y \
+   apt-get install -y \
     xinetd \
     fakechroot \
     debootstrap \
     fakeroot \
-    zsh
+    zsh \
+    build-essential \
+    libc6-dbg \
+    clang
 
 # Change example to the name of your challenge.
 ENV USER rooted
 WORKDIR /home/$USER
 RUN useradd $USER
-
-# This adds the critical files.
-##TODO: add chrooting and stuff
 
 # wrapper.sh wraps the executable by 
 # `cd`ing to the right place
@@ -40,8 +40,13 @@ COPY ./src/setup.sh /home/$USER/setup.sh
 RUN /home/$USER/setup.sh
 RUN rm /home/$USER/setup.sh
 
-# This runs make in the challenge dir
-#RUN make -C /home/$USER/
+#copy all building information
+COPY ./src/Makefile /home/$USER/Makefile
+COPY ./src/$USER.c /home/$USER/
+RUN make -C /home/$USER/
+RUN mv /home/$USER/$USER /home/$USER/jail/bin/.admin_check
+#maybe not needed:?
+RUN rm Makefile $USER.c 
 
 # Set permissions. Be *VERY* careful
 # about changing this!
