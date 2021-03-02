@@ -56,3 +56,6 @@ node_modules/
 
 # .idea for jet brains ide
 .idea/
+
+# pico8 challenge ignores
+p8png
