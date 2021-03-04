@@ -48,7 +48,7 @@ we see here that we can read in a file like so:
 ```
 
 What happens above is that the subshell created by `$(...)` has the file `.admin_check` set as its std in. So when the subshell returns its output into the string setup with the quotes `".."` the results are read into the quotes and stored in the variable v.   
-While we was testing this we actually ran into an issue that this post solves by adding quotes around the subshell, remove them and you'll see that all the nullbytes in .admin\_check executable are actually clobbered into spaces due to shell interpretation of the bytes, so to make life easier just leave the quotes
+While I was testing this challenge, I actually ran into an issue that this post solves by adding quotes around the subshell. Remove them and you'll see that all the nullbytes in .admin\_check executable are actually clobbered into spaces due to shell interpretation of the bytes, so to make life easier just leave the quotes
 
 so how do we actually read the bytes now that we can read a file? m
 ```
@@ -56,7 +56,7 @@ so how do we actually read the bytes now that we can read a file? m
 ```
 Great! now we just need to get it locally so we can reverse it. Remember, dropping the quotes here on the variable v will clobber the bytes of our binary.
 
-Luckily, we know that nc is just one way to connect to a server! Personally, we like to use [pwntools](https://docs.pwntools.com/en/latest/) to run exploits in an automated fashion so lets get a script running that will grab us the file: 
+Luckily, we know that nc is just one way to connect to a server! Personally, I like to use [pwntools](https://docs.pwntools.com/en/latest/) to run exploits in an automated fashion so lets get a script running that will grab us the file: 
 ```python
 from pwn import *
 import binascii
@@ -101,7 +101,7 @@ Now we have the file!! time to see if we got an elf:
 $file test
 test: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=a2dfa6b580e059f6cc136bc052a48f9cb9ffd361, for GNU/Linux 3.2.0, with debug_info, not stripped
 ```
-Sweet looks like we got the elf, which is good since we assumed the underlying host was running a linux os. lets throw it into our favorite RE tool ghidra. Why is it our favorite? Because ghidra decompiles it for us :) (Don't always trust the decompiled output, it can often lie to you, and you will get many headaches from not reading the assembly!) Luckily, this binary is nice and we can just read the output from ghidra here. To grab the decompiled output for main we can look at the functions tab, select main, and see the right tab for the decompiled output:
+Sweet looks like we got the elf, which is good since we assumed the underlying host was running a linux os. lets throw it into our favorite RE tool [ghidra](https://ghidra-sre.org/). Why is it our favorite? Because ghidra decompiles it for us :) (Don't always trust the decompiled output, it can often lie to you, and you will get many headaches from not reading the assembly!) Luckily, this binary is nice and we can just read the output from ghidra here. To grab the decompiled output for main we can look at the functions tab, select main, and check the tab on the right for the decompiled output:
 ```c
 int main(int argc,char **argv)
 {
@@ -130,7 +130,7 @@ void vuln(char *buf)
   return;
 }
 ```
-Looks like the typical gets vulnerability! Why is gets so bad? Check its man page under `BUGS` and you'll see the line *"Never use gets()"*. Essentially, we can write as many bytes to `buf` as we want, so we could attack a whole lot of this binary if we wanted to, but luckily we don't need to since whatever we write to buf will get executed once the buffer is called in the main function. 
+Looks like the typical gets vulnerability! Why is gets so bad? Check its man page under `BUGS` and you'll see the line *"Never use gets()"*. Essentially, gets waits until we send a "\n", we can write as many bytes to `buf` as we want! If we wanted, we could attack a whole lot of this binary, but luckily we don't need to since whatever we write to buf will get executed once the buffer is called in the main function. 
 
 Lastly we just want to check the permissions of the file using pwntools `checksec`:
 ```bash
@@ -216,13 +216,13 @@ syscall
 ```
 Overall this script breaks out of the chroot, (in an overkill fashion) by creating a new directory and rapidly changing directories back to hopefully cd into a directory outside of the root. If successful we can chroot to our new directory outside teh chroot, and execute a shell. This works becuase chroot is not really an effective security mechanism, and just designed to isolate filepaths not implement a full secure jail.  
 
-The comments should help make clear what is happening for the most part, we'd like to document where we ran into some hiccups while morphing the x86 code to x64. The first part is converting the systemcalls to x64 convention which wasn't too bad, but the syscalls.sh website (linked above) came in super handy. 
+The comments should help make clear what is happening for the most part, I'd like to document where I ran into some hiccups while morphing the x86 code to x64. The first part is converting the systemcalls to x64 convention which wasn't too bad, but the syscalls.sh website (linked above) came in super handy. 
 
 The other really big issue came from the loop instruction. we had an issue where each iteration of the loop instruction would not properly decrement rcx as expected. Each loop rcx was set to some large hex value, so we had to do some googling [link](https://stackoverflow.com/questions/2535989/what-are-the-calling-conventions-for-unix-linux-system-calls-and-user-space-f). Turns out the syscall instruction actually clobbers rcx, so like my comment says, we need to save rcx to the stack and pop it back after each `syscall`.
 
 With our shellcode complete its time to test it!
 
-Here are my steps we followed in writing the shellcode. we don't really write shellcode that often, so we'm sure there is a way to automate this process, but if you're still learning, doing this by hand is a good learning experience :) 
+Here are my steps we followed in writing the shellcode. I don't really write shellcode that often, so I'm sure there is a way to automate this process, but if you're still learning, doing this by hand is a good learning experience :) 
 ``` bash
 #write shellcode into shellcode.asm
 nasm -f elf64 shell.asm -o shellcode.o
@@ -324,18 +324,16 @@ $ python3 solve.py
 b'bctf{ch2007_p2073c75_p47h5_n07_h4ck5}\n'
 ```
 
-Hope you enjoyed this challenge, I sure learned alot about actually building a ctf challenge during this process! The next post will go over mostly the changes of the more advanced binary in the rooted_v2 challenge, and skip all the steps I explained above! 
+Hope you enjoyed this challenge, I sure learned alot about actually building a ctf challenge during this process, and had a great time along the way! I really wanna thank my ctf club officers, who have a GREAT ctf development workflow, that made developing this challenge much easier. 
 
-Feel free to contact me if you want about the challenge :) 
+The next post will go over mostly the changes of the more advanced binary in the rooted_v2 challenge, and skip all the steps I explained above! 
 
-Happy Hacking :) 
+For full code, feel free to checkout the solve.py here at the challenge [repo](https://github.com/b01lers/b01lers-ctf-2021/tree/rooted_v1/pwn/rooted_v1/solve)
+
+Happy Hacking and never stop learning! :)
 
 #### Side Note:
-we actually wrote this while solving the challenge myself haha
-hope others found the challenge fun and interesting, we certainly learned alot while making it!
-
-#### Side Note 2:
-peda is great, if you want to intall it: 
+peda is a great gdb frontend I love to use for stuff like this, if you want to install it: 
 ```bash
 git clone https://github.com/longld/peda.git ~/peda
 echo "source ~/peda/peda.py" >> ~/.gdbinit
