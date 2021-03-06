@@ -31,7 +31,7 @@ int main(int argc, char **argv){
   ((void (*)())buf)();
 
 
-  puts("Finishing Executing Shellcode. Exiting now...");
+  puts("Finished :)");
   
   return 0;
 }
