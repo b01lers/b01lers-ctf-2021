@@ -2,7 +2,7 @@
 
 * The first function call made at the start of the main loop is not important,
 but the second one is. It seeds the RNG with 2019, making the output of rand() calls predictable.
-![rng-seed failed] (img/rng-seed.png)
+![rng-seed failed](img/rng-seed.png)
 
 * Menu options:
 	- "Hint" is a troll, it just prints "Try harder in base64 encoding"
