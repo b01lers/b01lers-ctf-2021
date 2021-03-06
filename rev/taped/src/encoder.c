@@ -166,27 +166,27 @@ void waveWriteHeader(Wave *wave) {
   long pos = ftell(wave->file);
   rewind(wave->file);
 
-  toLittleEndian(sizeof(int), (void*)&(wave->header.chunkSize));
-  toLittleEndian(sizeof(int), (void*)&(wave->header.subChunk1Size));
-  toLittleEndian(sizeof(short int), (void*)&(wave->header.audioFormat));
-  toLittleEndian(sizeof(short int), (void*)&(wave->header.numChannels));
-  toLittleEndian(sizeof(int), (void*)&(wave->header.sampleRate));
-  toLittleEndian(sizeof(int), (void*)&(wave->header.byteRate));
-  toLittleEndian(sizeof(short int), (void*)&(wave->header.blockAlign));
-  toLittleEndian(sizeof(short int), (void*)&(wave->header.bitsPerSample));
-  toLittleEndian(sizeof(int), (void*)&(wave->header.subChunk2Size));
+  toLittleEndian(sizeof(int), (void*) &(wave->header.chunkSize));
+  toLittleEndian(sizeof(int), (void*) &(wave->header.subChunk1Size));
+  toLittleEndian(sizeof(short int), (void*) &(wave->header.audioFormat));
+  toLittleEndian(sizeof(short int), (void*) &(wave->header.numChannels));
+  toLittleEndian(sizeof(int), (void*) &(wave->header.sampleRate));
+  toLittleEndian(sizeof(int), (void*) &(wave->header.byteRate));
+  toLittleEndian(sizeof(short int), (void*) &(wave->header.blockAlign));
+  toLittleEndian(sizeof(short int), (void*) &(wave->header.bitsPerSample));
+  toLittleEndian(sizeof(int), (void*) &(wave->header.subChunk2Size));
 
   fwrite(&(wave->header), sizeof(WaveHeader), 1, wave->file);
 
-  toLittleEndian(sizeof(int), (void*)&(wave->header.chunkSize));
-  toLittleEndian(sizeof(int), (void*)&(wave->header.subChunk1Size));
-  toLittleEndian(sizeof(short int), (void*)&(wave->header.audioFormat));
-  toLittleEndian(sizeof(short int), (void*)&(wave->header.numChannels));
-  toLittleEndian(sizeof(int), (void*)&(wave->header.sampleRate));
-  toLittleEndian(sizeof(int), (void*)&(wave->header.byteRate));
-  toLittleEndian(sizeof(short int), (void*)&(wave->header.blockAlign));
-  toLittleEndian(sizeof(short int), (void*)&(wave->header.bitsPerSample));
-  toLittleEndian(sizeof(int), (void*)&(wave->header.subChunk2Size));
+  toLittleEndian(sizeof(int), (void*) &(wave->header.chunkSize));
+  toLittleEndian(sizeof(int), (void*) &(wave->header.subChunk1Size));
+  toLittleEndian(sizeof(short int), (void*) &(wave->header.audioFormat));
+  toLittleEndian(sizeof(short int), (void*) &(wave->header.numChannels));
+  toLittleEndian(sizeof(int), (void*) &(wave->header.sampleRate));
+  toLittleEndian(sizeof(int), (void*) &(wave->header.byteRate));
+  toLittleEndian(sizeof(short int), (void*) &(wave->header.blockAlign));
+  toLittleEndian(sizeof(short int), (void*) &(wave->header.bitsPerSample));
+  toLittleEndian(sizeof(int), (void*) &(wave->header.subChunk2Size));
 
   fseek(wave->file, pos, SEEK_SET);
 }
@@ -226,9 +226,6 @@ int main(int argc, char *argv[]) {
       waveWriteByte(&encoded, buffer[i]);
     }
   }
-
-  writeOne(&encoded);
-  writeZero(&encoded);
 
   int tailBits = (TAIL * SAMPLE_RATE) / SAMPLES_PER_BIT;
   for (int i = 0; i < tailBits; i++) {
