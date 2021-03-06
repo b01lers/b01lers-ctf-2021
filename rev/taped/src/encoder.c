@@ -37,10 +37,8 @@ typedef struct WaveHeader {
 
 typedef struct Wave {
   WaveHeader header;
-  char* data;
-  long long int index;
-  long long int size;
   long long int nSamples;
+  FILE *file;
 } Wave;
 
 int isBigEndian() {
@@ -105,50 +103,36 @@ WaveHeader makeWaveHeader() {
   myHeader.subChunk2Id[3] = 'a';
 
   // All sizes for later:
-  // chuckSize = 4 + (8 + subChunk1Size) + (8 + subChubk2Size)
+  // chuckSize = 4 + (8 + subChunk1Size) + (8 + subChunk2Size)
   // subChunk1Size is constanst, i'm using 16 and staying with PCM
   // subChunk2Size = nSamples * nChannels * bitsPerSample/8
   // Whenever a sample is added:
   //    chunkSize += (nChannels * bitsPerSample/8)
   //    subChunk2Size += (nChannels * bitsPerSample/8)
-  myHeader.chunkSize = 4 + 8 + 16 + 8 + 0;
   myHeader.subChunk1Size = 16;
   myHeader.subChunk2Size = 0;
+  myHeader.chunkSize = 4 + 8 + myHeader.subChunk1Size + 8 + myHeader.subChunk2Size;
 
   return myHeader;
 }
 
-Wave makeWave() {
+Wave makeWave(FILE *file) {
   Wave myWave;
   myWave.header = makeWaveHeader();
+  myWave.file = file;
+  myWave.nSamples = 0;
   return myWave;
 }
 
-void waveSetDuration(Wave* wave, long long int nSamples) {
-  long long int totalBytes = (wave->header.blockAlign * nSamples);
-  wave->data = (char*) malloc(totalBytes);
-  wave->index = 0;
-  wave->size = totalBytes;
-  wave->nSamples = nSamples;
-  wave->header.chunkSize = 4 + 8 + 16 + 8 + totalBytes;
-  wave->header.subChunk2Size = totalBytes;
-}
-
-void waveDestroy(Wave* wave) {
-  free(wave->data);
-}
-
 void waveAddSample(Wave* wave, const float sample) {
-  int i;
   int sample16bit;
   char* sampleBytes;
   sample16bit = (int) (32767 * sample);
   //sample = (char*)&litEndianInt( sample16bit );
   toLittleEndian(2, (void*) &sample16bit);
   sampleBytes = (char*) &sample16bit;
-  wave->data[wave->index + 0] = sampleBytes[0];
-  wave->data[wave->index + 1] = sampleBytes[1];
-  wave->index += 2;
+  fwrite(sampleBytes, 1, 2, wave->file);
+  wave->nSamples++;
 }
 
 int ONE_N = (SAMPLES_PER_BIT / ONE_CYCLES_PER_BIT) / 2;
@@ -175,8 +159,13 @@ void writeZero(Wave* wave) {
   }
 }
 
-void waveToFile(Wave* wave, FILE *file) {
-  // First make sure all numbers are little endian
+void waveWriteHeader(Wave *wave) {
+  wave->header.subChunk2Size = wave->nSamples * (wave->header.bitsPerSample / 8);
+  wave->header.chunkSize = 4 + 8 + wave->header.subChunk1Size + 8 + wave->header.subChunk2Size;
+
+  long pos = ftell(wave->file);
+  rewind(wave->file);
+
   toLittleEndian(sizeof(int), (void*)&(wave->header.chunkSize));
   toLittleEndian(sizeof(int), (void*)&(wave->header.subChunk1Size));
   toLittleEndian(sizeof(short int), (void*)&(wave->header.audioFormat));
@@ -187,11 +176,8 @@ void waveToFile(Wave* wave, FILE *file) {
   toLittleEndian(sizeof(short int), (void*)&(wave->header.bitsPerSample));
   toLittleEndian(sizeof(int), (void*)&(wave->header.subChunk2Size));
 
-  fwrite(&(wave->header), sizeof(WaveHeader), 1, file);
-  fwrite((void*) (wave->data), sizeof(char), wave->size, file);
-  fclose(file);
+  fwrite(&(wave->header), sizeof(WaveHeader), 1, wave->file);
 
-  // Convert back to system endian-ness
   toLittleEndian(sizeof(int), (void*)&(wave->header.chunkSize));
   toLittleEndian(sizeof(int), (void*)&(wave->header.subChunk1Size));
   toLittleEndian(sizeof(short int), (void*)&(wave->header.audioFormat));
@@ -201,43 +187,31 @@ void waveToFile(Wave* wave, FILE *file) {
   toLittleEndian(sizeof(short int), (void*)&(wave->header.blockAlign));
   toLittleEndian(sizeof(short int), (void*)&(wave->header.bitsPerSample));
   toLittleEndian(sizeof(int), (void*)&(wave->header.subChunk2Size));
+
+  fseek(wave->file, pos, SEEK_SET);
 }
 
 int main(int argc, char *argv[]) {
   FILE *in = fopen(argv[1], "rb");
   FILE *out = fopen(argv[2], "wb");
 
-  fseek(in, 0L, SEEK_END);
-  long int inSize = ftell(in);
-  rewind(in);
+  Wave encoded = makeWave(out);
+  waveWriteHeader(&encoded);
 
-  long long duration = inSize * BITS_PER_BYTE * SAMPLES_PER_BIT;
-  duration += (LEAD + TAIL) * SAMPLE_RATE;
-
-  Wave encoded = makeWave();
-  waveSetDuration(&encoded, duration);
   for (int i = 0; i < LEAD * SAMPLE_RATE; i++) {
     waveAddSample(&encoded, -1.0);
   }
 
-  for (long int i = 0; i < inSize * BITS_PER_BYTE ; i++) {
-    writeZero(&encoded);
-  }
+  writeOne(&encoded);
+  writeZero(&encoded);
 
   for (int i = 0; i < TAIL * SAMPLE_RATE; i++) {
     waveAddSample(&encoded, -1.0);
   }
-  waveToFile(&encoded, out);
-  waveDestroy(&encoded);
 
-  char buffer[16];
-  while (!feof(in)) {
-    int bytesRead = fread(buffer, 1, 16, in);
-    fwrite(buffer, 1, bytesRead, out);
-  }
-
+  waveWriteHeader(&encoded);
+  fclose(in);
   fclose(out);
-  return 0;
 
   return 0;
 }
