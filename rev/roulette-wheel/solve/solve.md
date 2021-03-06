@@ -2,7 +2,7 @@
 
 * The first function call made at the start of the main loop is not important,
 but the second one is. It seeds the RNG with 2019, making the output of rand() calls predictable.
-![rng-seed failed] (./rng-seed.png')
+![rng-seed failed] (rng-seed.png)
 
 * Menu options:
 	- "Hint" is a troll, it just prints "Try harder in base64 encoding"
@@ -10,25 +10,25 @@ but the second one is. It seeds the RNG with 2019, making the output of rand() c
 	- "Play" compares what the user entered vs randomly chosen numbers. 
 	It never grants a "win" to the player.
 	- As show below, there's an obvious 4th option in the menu branches show in the decompilation.
-	![4th-option.png failed] ('./4th-option.png')
+	![4th-option.png failed] (4th-option.png)
 * If a debugger is detected, the program will exit after printing the welcome message.
 This is done via the use of ptrace() through a syscall.
-![syscall.png failed] (./syscall.png')
+![syscall.png failed] (syscall.png)
 
 To find out what syscall 101 is, just look here: https://github.com/torvalds/linux/blob/master/arch/x86/entry/syscalls/syscall_64.tbl
 
 To defeat this technique, you can patch the check at runtime with gdb or nop out the call with a hexeditor of your choice.
-![gdb.png failed] (./gdb.png')
+![gdb.png failed] (gdb.png)
 
 * The 4th option is going to be the "win" function. As it stands, the only thing that it does is print out a short message.
 The warnings about unreachable blocks is a warning sign here
-![hint.png failed] (./hint.png')
+![hint.png failed] (hint.png)
 
 * Using a hexeditor, we can patch the comparison that will never evaluate to true, which only allows this function
 to print a message and exit. This can be done at runtime, or with a hexeditor as before.
-![railroad.png failed] ('railroad.png')
+![railroad.png failed] (railroad.png)
 
-![gdb2.png failed] ('./gdb2.png')
+![gdb2.png failed] (gdb2.png)
 
 * As mentioned before, the numbers coming out of the rand() calls are easily predictable.
 You can either grab the numbers directly from disassembly, or determine the numbers with a C snippet that seeds srand()
@@ -48,7 +48,7 @@ int main(){
 
 }
 ```
-![numbers.png failed] ('./numbers.png')
+![numbers.png failed] (numbers.png)
 
 
 * Once that is done, you must get the character representation of each hex value in the output and merge it together.
