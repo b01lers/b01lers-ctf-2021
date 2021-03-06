@@ -2,7 +2,7 @@
 
 * The first function call made at the start of the main loop is not important,
 but the second one is. It seeds the RNG with 2019, making the output of rand() calls predictable.
-![rng-seed failed] (./rng-seed.png]
+![rng-seed failed] (./rng-seed.png')
 
 * Menu options:
 	- "Hint" is a troll, it just prints "Try harder in base64 encoding"
@@ -10,7 +10,7 @@ but the second one is. It seeds the RNG with 2019, making the output of rand() c
 	- "Play" compares what the user entered vs randomly chosen numbers. 
 	It never grants a "win" to the player.
 	- As show below, there's an obvious 4th option in the menu branches show in the decompilation.
-	[!./4th-option.png]
+	![4th-option.png failed] ('./4th-option.png')
 * If a debugger is detected, the program will exit after printing the welcome message.
 This is done via the use of ptrace() through a syscall.
 ![syscall.png failed] (./syscall.png')
