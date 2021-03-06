@@ -1,14 +1,14 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-const int SAMPLE_RATE = 44100;
+const int SAMPLE_RATE = 9600;
 const int ONE_FREQ = 2400;
 const int ZERO_FREQ = 1200;
 const int ZERO_CYCLES_PER_BIT = 4;
 const int ONE_CYCLES_PER_BIT = 8;
 const int SAMPLES_PER_BIT = (SAMPLE_RATE / ZERO_FREQ) * ZERO_CYCLES_PER_BIT;
 const int BITS_PER_BYTE = 1 + 8 + 2;
-const int AMPLITUDE = 128;
+const float AMPLITUDE = 0.5;
 const int LEAD = 5;
 const int TAIL = 5;
 
@@ -139,10 +139,10 @@ int ONE_N = (SAMPLES_PER_BIT / ONE_CYCLES_PER_BIT) / 2;
 void writeOne(Wave* wave) {
   for (int i = 0; i < ONE_CYCLES_PER_BIT; i++) {
     for (int j = 0; j < ONE_N; j++) {
-      waveAddSample(wave, 1.0);
+      waveAddSample(wave, -AMPLITUDE);
     }
     for (int j = 0; j < ONE_N; j++) {
-      waveAddSample(wave, -1.0);
+      waveAddSample(wave, AMPLITUDE);
     }
   }
 }
@@ -151,10 +151,10 @@ int ZERO_N = (SAMPLES_PER_BIT / ZERO_CYCLES_PER_BIT) / 2;
 void writeZero(Wave* wave) {
   for (int i = 0; i < ZERO_CYCLES_PER_BIT; i++) {
     for (int j = 0; j < ZERO_N; j++) {
-      waveAddSample(wave, 1.0);
+      waveAddSample(wave, -AMPLITUDE);
     }
     for (int j = 0; j < ZERO_N; j++) {
-      waveAddSample(wave, -1.0);
+      waveAddSample(wave, AMPLITUDE);
     }
   }
 }
@@ -191,6 +191,22 @@ void waveWriteHeader(Wave *wave) {
   fseek(wave->file, pos, SEEK_SET);
 }
 
+void waveWriteByte(Wave *wave, char byte) {
+  writeZero(wave);
+
+  for (int i = 0; i < 8; i++) {
+    int bit = (byte >> i) & 1;
+    if (bit == 1) {
+      writeOne(wave);
+    } else {
+      writeZero(wave);
+    }
+  }
+
+  writeOne(wave);
+  writeOne(wave);
+}
+
 int main(int argc, char *argv[]) {
   FILE *in = fopen(argv[1], "rb");
   FILE *out = fopen(argv[2], "wb");
@@ -198,19 +214,28 @@ int main(int argc, char *argv[]) {
   Wave encoded = makeWave(out);
   waveWriteHeader(&encoded);
 
-  for (int i = 0; i < LEAD * SAMPLE_RATE; i++) {
-    waveAddSample(&encoded, -1.0);
+  int leadBits = (LEAD * SAMPLE_RATE) / SAMPLES_PER_BIT;
+  for (int i = 0; i < leadBits; i++) {
+    writeOne(&encoded);
+  }
+
+  char buffer[16];
+  while (!feof(in)) {
+    int bytesRead = fread(buffer, 1, 16, in);
+    for (int i = 0; i < bytesRead; i++) {
+      waveWriteByte(&encoded, buffer[i]);
+    }
   }
 
   writeOne(&encoded);
   writeZero(&encoded);
 
-  for (int i = 0; i < TAIL * SAMPLE_RATE; i++) {
-    waveAddSample(&encoded, -1.0);
+  int tailBits = (TAIL * SAMPLE_RATE) / SAMPLES_PER_BIT;
+  for (int i = 0; i < tailBits; i++) {
+    writeOne(&encoded);
   }
 
   waveWriteHeader(&encoded);
-  fclose(in);
   fclose(out);
 
   return 0;
