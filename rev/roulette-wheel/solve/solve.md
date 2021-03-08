@@ -5,11 +5,11 @@ but the second one is. It seeds the RNG with 2019, making the output of rand() c
 ![rng-seed failed](img/rng-seed.png)
 
 * Menu options:
-	- "Hint" is a troll, it just prints "Try harder in base64 encoding"
+	- "Hint" is a troll, it just prints "Try harder" in base64 encoding.
 	- "Choose" stores the six user choices in a queue.
 	- "Play" compares what the user entered vs randomly chosen numbers. 
 	It never grants a "win" to the player.
-	- As show below, there's an obvious 4th option in the menu branches show in the decompilation.
+	- As show below, there's an obvious 4th option in the menu branches shown in the decompilation.
 	
 ![4th-option.png failed](img/4th-option.png)
 
@@ -32,9 +32,17 @@ to print a message and exit. This can be done at runtime, or with a hexeditor as
 
 ![gdb2.png failed](img/gdb2.png)
 
+
+* After patching the binary to reveal the dead code section,
+it's clear that there's a counter in use to enforce the six number requirement.
+
+![counter.png failed](img/counter.png)
+
+
+
 * As mentioned before, the numbers coming out of the rand() calls are easily predictable.
-You can either grab the numbers directly from disassembly, or determine the numbers with a C snippet that seeds srand()
-and makes six calls to rand() like so:
+You can either grab the encoded values directly from disassembly, or determine the numbers needed to reach the "win" condition
+with a C snippet that seeds srand() and makes six calls to rand() like so:
 ```
 #include <stdlib.h>
 #include <stdio.h>
@@ -54,7 +62,7 @@ int main(){
 
 
 * Once that is done, you must get the character representation of each hex value in the output and merge it together.
-This is hinted at by the "Join us" string.
+This is hinted at by the "Join us" string that is printed when the numbers are incorrect.
 
 The code for doing so is as follows:
 ```
