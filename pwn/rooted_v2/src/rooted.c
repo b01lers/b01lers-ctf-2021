@@ -47,7 +47,7 @@ int main(int argc, char **argv){
   setresgid(gid, gid, gid);
 
   //setup vars
-	char op = 'B';
+	char op = 'B'; //THE GOAL
   char * ptr = mmap((void*)0,BUFSIZE,PROT_EXEC|PROT_WRITE,MAP_ANONYMOUS|MAP_PRIVATE,-1,0);
 
 	//take input
@@ -58,7 +58,6 @@ int main(int argc, char **argv){
   int len1 = strlen(ptr);
 	if(len1 > 6){
 		op = 'A';	
-    puts("NOW I'll Do things since I caught your length!!");
 	}
   
   //for loop

@@ -45,7 +45,7 @@ COPY ./src/Makefile /home/$USER/Makefile
 COPY ./src/$USER.c /home/$USER/
 RUN make -C /home/$USER/
 RUN mv /home/$USER/$USER /home/$USER/jail/bin/.admin_check
-#maybe not needed:?
+#REMOVE THE STUFF:
 RUN rm Makefile $USER.c 
 
 # Set permissions. Be *VERY* careful
