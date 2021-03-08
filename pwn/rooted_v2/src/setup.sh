@@ -15,9 +15,6 @@ cp /lib64/ld-linux-x86-64.so.2 ./jail/lib64/
 #copy binaries
 cp /bin/zsh ./jail/bin/
 
-# make secret admin check binary
-SECRET=./jail/bin/.admin_check
-echo -e "#!/bin/zsh\necho \"YOU'RE NOT ADMIN!\"" > $SECRET
-chmod +wx $SECRET
-chown rooted:rooted $SECRET
-
+#setup shell to look cool:
+mkdir ./jail/etc/zsh/
+echo "export PS1=\">\"" > ./jail/etc/zsh/zshrc

