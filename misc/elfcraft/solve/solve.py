@@ -28,7 +28,7 @@ for i in range(228):
 	char1 = ""
 	char2 = ""
 	for j in range(16):
-		compare = Image.open("char-bmps/{}.png".format(hex(j)[2:])).convert("RGB")
+		compare = Image.open("char-pngs/{}.png".format(hex(j)[2:])).convert("RGB")
 		if ImageChops.difference(char1_img, compare).getbbox() == None:
 			char1 = hex(j)[2:]
 		if ImageChops.difference(char2_img, compare).getbbox() == None:
