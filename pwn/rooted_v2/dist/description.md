@@ -1,7 +1,7 @@
 Challenge Title: rooted
 Challenge Author: mastermjr
-Challenge Difficulty: medium???
+Challenge Difficulty: medium
 
-HA now you really can't move! I rooted you! There is no possible way to read my super secret file!
+Dang you solved my easy challenge, but can you break out again??
 
-nc chal.ctf.b01lers.com 2007
+nc chal.ctf.b01lers.com 7002

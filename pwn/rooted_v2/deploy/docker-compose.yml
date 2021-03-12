@@ -1,6 +1,6 @@
 version: "3"
 services:
-  rooted:
+  rooted_v2:
     container_name: rooted
     build:
         dockerfile: ./deploy/Dockerfile
@@ -8,7 +8,4 @@ services:
     logging:
         driver: "json-file"
     ports:
-        - "2007:1337"
-    #TODO: remove
-    stdin_open: true
-    tty: true
+        - "7002:1337"

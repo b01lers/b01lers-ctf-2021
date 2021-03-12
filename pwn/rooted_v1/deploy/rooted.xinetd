@@ -1,4 +1,4 @@
-service metacortex
+service rooted
 {
         disable                 = no
         socket_type             = stream

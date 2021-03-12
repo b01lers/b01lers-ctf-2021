@@ -50,7 +50,7 @@ we see here that we can read in a file like so:
 What happens above is that the subshell created by `$(...)` has the file `.admin_check` set as its std in. So when the subshell returns its output into the string setup with the quotes `".."` the results are read into the quotes and stored in the variable v.   
 While I was testing this challenge, I actually ran into an issue that this post solves by adding quotes around the subshell. Remove them and you'll see that all the nullbytes in .admin\_check executable are actually clobbered into spaces due to shell interpretation of the bytes, so to make life easier just leave the quotes
 
-so how do we actually read the bytes now that we can read a file? m
+so how do we actually read the bytes now that we can read a file?
 ```
 > echo $v
 ```
@@ -93,7 +93,7 @@ if __name__ == "__main__":
     #grab bin data
     grab_file()
 ```
-What this script will do is connect to our remote service, input our commands to get the binary and read it in from over the remote process. pwntools is super nice for this as it allready manages all the in/out of the remote process and we can use it to read from super easyily. The trick is to tack on a tag at the eendof our reading so that we know once we've reached the end of the file. we want to make sure to set it to some really long string that won't be in the actual file. adding the drop in the recvuntil cuts out the flag from the input making clean code.
+What this script will do is connect to our remote service, input our commands to get the binary and read it in from over the remote process. pwntools is super nice for this as it already manages all the in/out of the remote process and we can use it to read from super easyily. The trick is to tack on a tag at the eendof our reading so that we know once we've reached the end of the file. we want to make sure to set it to some really long string that won't be in the actual file. adding the drop in the recvuntil cuts out the flag from the input making clean code.
 
 
 Now we have the file!! time to see if we got an elf:

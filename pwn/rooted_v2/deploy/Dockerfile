@@ -9,8 +9,8 @@ FROM ubuntu:20.04
 
 RUN apt-get update && \
    apt-get install -y \
-    xinetd \
     fakechroot \
+    xinetd \
     debootstrap \
     fakeroot \
     zsh \
@@ -62,6 +62,4 @@ EXPOSE 1337
 
 # Start the container by starting xinetd and outputting
 # the xinetd log for debugging.
-#CMD service xinetd start && sleep 2 && tail -f /var/log/xinetdlog
-#DEBUGGING: 
-CMD /bin/zsh
+CMD service xinetd start && sleep 2 && tail -f /var/log/xinetdlog

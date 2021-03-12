@@ -5,7 +5,7 @@ import time
 ### set  for  challenge ###
 context(arch = 'amd64', os = 'linux')
 addr = "localhost"
-port = 2007
+port = 7002
 ### set  for  challenge ###
 
 ###other setup
@@ -91,6 +91,5 @@ if __name__ == "__main__":
     pwn()
     #grab flag!
     p.sendlineafter("糟糕!","cat /home/rooted/flag.txt")
-    p.recvline()
-    print(p.recvline())
+    print(p.recvuntil("}").strip())
 
