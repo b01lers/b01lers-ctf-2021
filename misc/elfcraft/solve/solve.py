@@ -37,7 +37,7 @@ for i in range(228):
 elf.close()
 
 # part 2: brute force one byte to get the flag
-os.system("chmod +x elf")  # lmao
+os.system("chmod +x elf")
 for i in range(0,256):
 	p = process("./elf")
 	p.sendline(bytes([i]))
