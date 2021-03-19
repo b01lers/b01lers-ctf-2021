@@ -8,5 +8,5 @@ RUN npm install
 
 COPY index.js index.html comic_sans.woff comic_sans.woff2 ./
 
-#CMD ["/bin/node /server_files/index.js"]
-CMD ["/bin/sh"]
+CMD ["node", "index.js"]
+#CMD ["/bin/sh"]

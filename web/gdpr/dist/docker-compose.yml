@@ -1,0 +1,7 @@
+version: "3.9"  # optional since v1.27.0
+services:
+  gdpr:
+    build: .
+    ports:
+      - "1004:3000"
+
