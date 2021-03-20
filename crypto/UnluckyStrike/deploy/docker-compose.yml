@@ -8,4 +8,4 @@ services:
         logging:
             driver: "json-file"
         ports:
-            - "127.0.0.1:25002:2001"
+            - "25002:2001"
