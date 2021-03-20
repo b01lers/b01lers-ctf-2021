@@ -2,8 +2,8 @@
 #include <stdio.h>
 
 const int SAMPLE_RATE = 9600;
-const int ONE_FREQ = 2400;
-const int ZERO_FREQ = 1200;
+const int ONE_FREQ = 600;
+const int ZERO_FREQ = 300;
 const int ZERO_CYCLES_PER_BIT = 4;
 const int ONE_CYCLES_PER_BIT = 8;
 const int SAMPLES_PER_BIT = (SAMPLE_RATE / ZERO_FREQ) * ZERO_CYCLES_PER_BIT;
@@ -208,8 +208,26 @@ void waveWriteByte(Wave *wave, char byte) {
 }
 
 int main(int argc, char *argv[]) {
+  if (argc < 3) {
+    printf("error: too few arguments\n");
+    printf("usage: encoder input output.wav\n");
+    return 1;
+  }
+
   FILE *in = fopen(argv[1], "rb");
+  if (in == NULL) {
+    printf("error: couldn't open %s for reading\n", argv[1]);
+    printf("usage: encoder input output.wav\n");
+    return 1;
+  }
   FILE *out = fopen(argv[2], "wb");
+  if (out == NULL) {
+    fclose(in);
+
+    printf("error: couldn't open %s for writing\n", argv[1]);
+    printf("usage: encoder input output.wav\n");
+    return 1;
+  }
 
   Wave encoded = makeWave(out);
   waveWriteHeader(&encoded);
@@ -220,10 +238,19 @@ int main(int argc, char *argv[]) {
   }
 
   char buffer[16];
+  int lrc = 0;
+  int insertCheck = 0;
   while (!feof(in)) {
     int bytesRead = fread(buffer, 1, 16, in);
     for (int i = 0; i < bytesRead; i++) {
+      lrc = (lrc + buffer[i]) & 0xFF;
       waveWriteByte(&encoded, buffer[i]);
+      if (insertCheck == 3) {
+        lrc = ((lrc ^ 0xFF) + 1) & 0xFF;
+        waveWriteByte(&encoded, (char) lrc);
+        lrc = 0;
+      }
+      insertCheck = (insertCheck + 1) % 4;
     }
   }
 
@@ -233,6 +260,7 @@ int main(int argc, char *argv[]) {
   }
 
   waveWriteHeader(&encoded);
+  fclose(in);
   fclose(out);
 
   return 0;
