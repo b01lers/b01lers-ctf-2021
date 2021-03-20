@@ -1,6 +1,6 @@
 Challenge Title: Taped
 Challenge Author: treev1l
-Challenge Difficulty: Medium
+Challenge Difficulty: Hard
 
 
 I recently found a yellowed cassette tape in a box of old computer junk and the

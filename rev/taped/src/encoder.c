@@ -2,8 +2,8 @@
 #include <stdio.h>
 
 const int SAMPLE_RATE = 9600;
-const int ONE_FREQ = 600;
-const int ZERO_FREQ = 300;
+const int ONE_FREQ = 2400;
+const int ZERO_FREQ = 1200;
 const int ZERO_CYCLES_PER_BIT = 4;
 const int ONE_CYCLES_PER_BIT = 8;
 const int SAMPLES_PER_BIT = (SAMPLE_RATE / ZERO_FREQ) * ZERO_CYCLES_PER_BIT;
