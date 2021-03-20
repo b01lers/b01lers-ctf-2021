@@ -1,6 +1,6 @@
 from Crypto.Random import get_random_bytes
 from Crypto.Cipher import AES
-import sys, base64
+import sys, base64, time
 from proprietary_data import *
 
 
@@ -37,16 +37,12 @@ class Server:
          tenc = base64.b64decode(ticket)
          cipher = AES.new(self.key, AES.MODE_CBC, tenc[:16])
          traw = cipher.decrypt(tenc[16:])
-         print("DEC:", traw)
          traw = unpkcs7(traw)
-         print("DEC2:", traw)
-         pos = traw.index(b"numbers:")
-         nums = [v for v in traw[pos+8:].split(b",")] [:Nballs]
+         nums = [v for v in traw[traw.index(b"numbers")+8:].split(b",")] [:Nballs]
       except (ValueError, IndexError):
          print("that is an invalid ticket")
          return False
-      if any([ str(v).encode("ascii") not in nums  for v in self.numbers]):  # FIXME
-         print(nums)
+      if any([ str(v).encode("ascii") not in nums  for v in self.numbers]):
          print(f"sorry, that ticket did not win anything")
          return False
       else:
@@ -66,10 +62,11 @@ class Server:
       print( "Here is your complimentary raffle ticket:\n"
             f"{ticket}")
       print( "")
-      #sleep(1)
+      time.sleep(1)
       sys.stdout.write(f"Draw commencing... [drumroll]")
+      sys.stdout.flush()
       self.numbers = [int.from_bytes(get_random_bytes(3), "big")   for i in range(Nballs)]
-      #sleep(4)
+      time.sleep(4)
       print( "... and the winning numbers are:\n"
             f"{self.numbers}\n"
              "")
