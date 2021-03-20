@@ -63,16 +63,16 @@ It looks like a number is getting stored in RAX and multiplied with itself, then
 Let's pop open GDB and make one final check before we start implementing this, set a breakpoint here (`b *0x55555555b8ba`) and check what values are getting compared.
 
 So lets start by giving 'A' * 33 as our input.
-RDX is 0x41 and RAX is 0, the result gets compared against 0x66 (f), then the program exits and gives us the fail message, good thats what we expected.
+RDX is 0x41 and RAX is 0, the result gets compared against 0x62 (b), then the program exits and gives us the fail message, good thats what we expected.
 
-Now lets try starting our input with the flag format 'flag{A...}'
-On the first iteration RDX is 0x66 (f) and RAX is 0, the result gets stored in RCX and is compared against the first byte of the check data,
-on the second iteration RDX is 0x6a (l) and RAX is 1, this then gets checked against the next byte of the check string.
+Now lets try starting our input with the flag format 'bctf{A...}'
+On the first iteration RDX is 0x62 (b) and RAX is 0, the result gets stored in RCX and is compared against the first byte of the check data,
+on the second iteration RDX is 0x63 (c) and RAX is 1, this then gets checked against the next byte of the check string.
 
 It looks like the pattern is holding, and it is an XOR so we can just use it against the encoded flag to get our flag!
 
 Grab the scrambled bytes from Ghidra or gdb, and decode with python
 ```
 In [23]: ''.join([chr(c^(i*i%256)) for  (i,c) in enumerate(enc)])
-Out[23]: 'flag{@_l3ast_u_didn7_g3t_tet4nu5}'
+Out[23]: 'bctf{@_l3ast_u_didn7_g3t_tet4nu5}'
 ```
