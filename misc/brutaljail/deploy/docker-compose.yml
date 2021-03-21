@@ -1,0 +1,11 @@
+version: "3.7"
+services:
+    brutaljail:
+        container_name: brutaljail
+        build:
+            dockerfile: ./deploy/Dockerfile
+            context: ../
+        logging:
+            driver: "json-file"
+        ports:
+            - "1337:1337"

