@@ -1,0 +1,11 @@
+version: "3"
+services:
+  rooted_v2:
+    container_name: rooted
+    build:
+        dockerfile: ./deploy/Dockerfile
+        context: ../
+    logging:
+        driver: "json-file"
+    ports:
+        - "7002:1337"

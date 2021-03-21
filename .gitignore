@@ -50,3 +50,12 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+# node_modules
+node_modules/
+
+# .idea for jet brains ide
+.idea/
+
+# pico8 challenge ignores
+p8png

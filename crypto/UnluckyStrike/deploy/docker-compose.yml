@@ -1,0 +1,11 @@
+version: "3"
+services:
+    example:
+        container_name: unlucky_strike
+        build:
+            dockerfile: ./deploy/Dockerfile
+            context: ../
+        logging:
+            driver: "json-file"
+        ports:
+            - "25002:2001"
