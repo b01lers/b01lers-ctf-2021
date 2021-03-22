@@ -14,5 +14,3 @@ It is possible to trigger a SIGSEV exception in the child component that is hand
 
 `src/i10.txt` is the input that when provided to the program leaks the flag.
 
-Due to the nature of the VM communication and its exploitation it is hard to have a flag cannot longer than 8 bytes (and a flag file name longer than 4 characters), therefore I am not following the standard flag format.
-

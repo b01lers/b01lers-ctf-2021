@@ -56,8 +56,12 @@ test("i14.txt", [b"Welcome to the boilervm!\nhow many instructions? how many val
 
 with open("flag", "rb") as fp:
     ff = fp.read()
-ff = ff.strip()
+ff = ff.strip()[:8]
 test("i10.txt", [struct.unpack("<Q", ff)[0],b"",False])
+with open("flag", "rb") as fp:
+    ff = fp.read()
+ff = ff.strip()[8:16]
+test("i20.txt", [struct.unpack("<Q", ff)[0],b"",False])
 
 print("="*10, "ALL GOOD!")
 
