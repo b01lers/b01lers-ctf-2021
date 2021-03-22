@@ -95,7 +95,6 @@ ptrace.restype = c_long
 ptrace_regs = user_regs_struct()
 
 
-
 def pkiller():
     from ctypes import cdll
     import ctypes
@@ -231,8 +230,6 @@ def parse_inst(inst):
         return tcode
 
 
-
-
     icode = b""
 
     assert len(inst) < 200
@@ -292,7 +289,6 @@ def parse_inst(inst):
     return icode
 
 
-
 def main():
     print("Welcome to the boilervm!")
     ninstr = int(input("how many instructions? "))
@@ -330,8 +326,6 @@ def main():
     code = code.ljust(0x1000-len(endcode), b"\x90")
     code = code+endcode
     assert len(code) == 0x1000
-    
-
 
     nvalues = int(input("how many values? "))
     assert nvalues>0 and nvalues<=4
@@ -363,11 +357,8 @@ def main():
 
     ptrace(PTRACE_SETOPTIONS, pid, 0, PTRACE_O_TRACESECCOMP | PTRACE_O_EXITKILL | PTRACE_O_TRACECLONE | PTRACE_O_TRACEVFORK)
     ptrace(PTRACE_CONT, pid, 0, 0)
-
-
     p.stdin.write(buf)
     p.stdin.close()
-
 
     while True:
         pid, status = os.waitpid(-1, 0) 
@@ -393,8 +384,8 @@ def main():
 
             prip = ptrace_regs.rip
             while True:
-                vmem = readmem(pid, prip, 4)
-                if vmem == b"\xcc"*4:
+                vmem = readmem(pid, prip, 5)
+                if vmem == b"\xcc"*5:
                     break
                 prip+=1
             ptrace_regs.rip = prip+4+1
@@ -412,10 +403,7 @@ def main():
         pass
 
 
-
 if __name__ == "__main__":
     sys.exit(main())
-
-
 
 

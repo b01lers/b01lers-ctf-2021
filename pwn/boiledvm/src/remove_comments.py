@@ -34,6 +34,8 @@ for i, l in enumerate(cc.split("\n")):
 
     out.append(nl)
 outc = "\n".join((l for l in out if l is not None))
+while "\n\n\n\n" in outc:
+    outc = outc.replace("\n\n\n\n", "\n\n\n")
 
 with open(sys.argv[2], "w") as fp:
     fp.write(outc)
