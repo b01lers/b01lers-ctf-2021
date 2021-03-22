@@ -1,0 +1,11 @@
+version: "3"
+services:
+  boiledvm:
+    container_name: boiledvm
+    build:
+        dockerfile: ./deploy/Dockerfile
+        context: ../
+    logging:
+        driver: "json-file"
+    ports:
+        - "7012:4567"
