@@ -388,7 +388,7 @@ def main():
                 if vmem == b"\xcc"*5:
                     break
                 prip+=1
-            ptrace_regs.rip = prip+4+1
+            ptrace_regs.rip = prip+5
             ptrace(PTRACE_SETREGS, pid, 0, ctypes.addressof(ptrace_regs))
 
 

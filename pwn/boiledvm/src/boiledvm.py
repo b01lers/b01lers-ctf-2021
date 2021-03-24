@@ -497,7 +497,7 @@ def main():
                 if vmem == b"\xcc"*5:
                     break
                 prip+=1
-            ptrace_regs.rip = prip+4+1
+            ptrace_regs.rip = prip+5
             #if first:
             #    print("--------->", hex(ptrace_regs.rax))
                 #ptrace_regs.rax = (0x2000000000000000-512)
