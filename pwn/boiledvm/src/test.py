@@ -5,6 +5,8 @@ import subprocess
 import struct
 
 
+pipe = subprocess.PIPE
+
 def pkiller():
     from ctypes import cdll
     import ctypes
@@ -14,7 +16,6 @@ def pkiller():
 
 def test(fname, out):
     print("="*5, "testing " + fname)
-    pipe = subprocess.PIPE
     p = subprocess.Popen(["./boiledvm.py"], stdout=pipe, stderr=pipe, stdin=pipe, close_fds=True, preexec_fn=pkiller)
 
     with open(fname, "rb") as fp:
@@ -63,7 +64,15 @@ with open("flag", "rb") as fp:
 ff = ff.strip()[8:16]
 test("i20.txt", [struct.unpack("<Q", ff)[0],b"",False])
 
+print("="*5, "test with socat")
+p = subprocess.Popen(["./test_with_socat.sh"], stdout=pipe, stderr=pipe, stdin=pipe, close_fds=True, preexec_fn=pkiller)
+res = p.communicate()
+print(res[0])
+assert ff in res[0]
+
 print("="*10, "ALL GOOD!")
 
-
-
+'''
+./rebuild.sh
+./test.py
+'''

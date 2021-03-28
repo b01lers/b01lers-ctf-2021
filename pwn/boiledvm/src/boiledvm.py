@@ -416,8 +416,6 @@ def main():
     code = code.ljust(0x1000-len(endcode), b"\x90")
     code = code+endcode
     assert len(code) == 0x1000
-    
-
 
     nvalues = int(input("how many values? "))
     assert nvalues>0 and nvalues<=4
@@ -454,12 +452,8 @@ def main():
     #therefore, the waitpid above is essential to call SETOPTIONS while the child is not terminated yet, but it has called traceme
     ptrace(PTRACE_SETOPTIONS, pid, 0, PTRACE_O_TRACESECCOMP | PTRACE_O_EXITKILL | PTRACE_O_TRACECLONE | PTRACE_O_TRACEVFORK)
     ptrace(PTRACE_CONT, pid, 0, 0)
-
-    #print("---")
-
     p.stdin.write(buf)
     p.stdin.close()
-
     #print(pid)
 
     while True:
@@ -498,12 +492,12 @@ def main():
             prip = ptrace_regs.rip
             while True:
                 #print(hex(prip))
-                vmem = readmem(pid, prip, 4)
+                vmem = readmem(pid, prip, 5)
                 #print(repr(vmem))
-                if vmem == b"\xcc"*4:
+                if vmem == b"\xcc"*5:
                     break
                 prip+=1
-            ptrace_regs.rip = prip+4+1
+            ptrace_regs.rip = prip+5
             #if first:
             #    print("--------->", hex(ptrace_regs.rax))
                 #ptrace_regs.rax = (0x2000000000000000-512)
