@@ -5,7 +5,6 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    # Type confusion in json False / "False"?
     f = request.args.get('animal', 'dogs')
     with open(f, 'r') as f:
         file_content = f.read(200)
