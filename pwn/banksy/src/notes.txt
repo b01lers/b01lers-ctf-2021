@@ -1,0 +1,9 @@
+0x080549a0
+0x801bf21 pos:
+0x801bfc1 map:
+
+0x0808d270 -> _itoa_word
+0x0808d310 -> _itoa_word_ret
+stack pivots @ printf_positional+1709
+stack reverts @ printf_positional+975
+ret @ printf_positional+982

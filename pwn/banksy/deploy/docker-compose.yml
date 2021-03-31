@@ -1,0 +1,16 @@
+version: "3.7"
+services:
+    banksy:
+        container_name: banksy
+        cap_add: 
+            - SYS_PTRACE
+        security_opt:
+            - seccomp:unconfined
+            - apparmor:unconfined
+        build:
+            dockerfile: ./deploy/Dockerfile
+            context: ../
+        logging:
+            driver: "json-file"
+        ports:
+            - "1010:1337"
