@@ -11,5 +11,6 @@ def xor(msg, key):
 
 ptxt = xor(ctxt, key1)
 ptxt = xor(ptxt, key2)
-print(ptxt)
+print(ptxt.decode("ascii"))
+
 
