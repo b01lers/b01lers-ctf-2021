@@ -7,7 +7,7 @@ from pwn import *
 # We see that there is a BIG BUG being fixed here. Basically, if you call printf with this string:
 # "%2$.2147483616$p"
 # printf_positional will undergo a stack pivot on x86 32 bit architectures.
-# THis stack pivot has high probability of landing in the mapped area.
+# This stack pivot has high probability of landing in the mapped area.
 
 # Now for how the exploit works. 
 # We get to choose where to stop the program and overwrite. 
