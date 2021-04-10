@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Swirler</title>
+    <link rel="icon" href="favicon.svg">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gl-matrix/2.8.1/gl-matrix-min.js" integrity="sha512-zhHQR0/H5SEBL3Wn6yYSaTTZej12z0hVZKOv3TwCUXT1z5qeqGcXJLLrbERYRScEDDpYIJhPC1fk31gqR783iQ==" crossorigin="anonymous" defer></script>
+    <script src="swirler.js" defer></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css" integrity="sha256-WLKGWSIJYerRN8tbNGtXWVYnUM5wMJTXD8eG4NtGcDM=" crossorigin="anonymous">
+  </head>
+
+  <body>
+    <section class="section">
+        <div class="container">
+          <h1 class="title">Swirler</h1>
+          <p class="subtitle">
+            Need to censor an image? <b>Swirler</b> is the way to go
+          </p>
+
+          <div class="file field">
+            <label class="file-label">
+              <input id="img-input" class="file-input" type="file">
+              <span class="file-cta">
+                <span class="file-label">
+                  Choose image
+                </span>
+              </span>
+            </label>
+          </div>
+
+          <canvas id="glcanvas" width="512" height="512" hidden></canvas>
+        </div>
+    </section>
+  </body>
+</html>
