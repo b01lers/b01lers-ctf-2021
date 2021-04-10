@@ -1,0 +1,16 @@
+service boiledvm
+{
+    socket_type = stream
+    protocol    = tcp
+    wait        = no
+    user        = nobody
+    bind        = 0.0.0.0
+    server      = /wrapper.sh
+    port        = 4567
+    type        = UNLISTED
+
+    per_source              = 10
+    log_type                = FILE /var/log/xinetdlog
+    log_on_success          = HOST PID EXIT DURATION
+    log_on_failure          = HOST
+}

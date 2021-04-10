@@ -1,0 +1,23 @@
+version: "3.7"
+services:
+    middleagedheap:
+        container_name: middleagedheap
+        build:
+            dockerfile: ./deploy/Dockerfile
+            context: ../
+        logging:
+            driver: "json-file"
+        ports:
+            - "1337:1337"
+    middleagedheap-build:
+        container_name: middleagedheap-build
+        build:
+            dockerfile: ./deploy/Dockerfile-build
+            context: ../
+        logging:
+            driver: "json-file"
+        volumes:
+            - build:/home/middleagedheap/build
+volumes:
+    build:
+        name: middleagedheap-build

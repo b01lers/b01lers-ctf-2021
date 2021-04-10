@@ -1,0 +1,12 @@
+version: "3"
+services:
+    example:
+        container_name: r_sec_ahead
+        build:
+            dockerfile: ./deploy/Dockerfile
+            context: ../
+        logging:
+            driver: "json-file"
+        ports:
+            - "25000:2001"
+            - "25001:2002"
