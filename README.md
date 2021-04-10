@@ -1,10 +1,14 @@
 # b01lers-ctf-2021
 The 2021 iteration of b01lers CTF!
 
-# For developers:
+# Running remote challenges
 
-First, read [the development guide](https://github.com/b01lers/b01lers-ctf-2021/wiki/How-we-develop-our-CTFs)
+For the most part, remote challenges should run if you run `docker-compose up` in the `deploy` directory for the challenge.
 
-Next, take a look at the [brainstorming project](https://github.com/b01lers/b01lers-ctf-2021/projects/1)
+For everything else:
+- `src` has source code and build stuff.
+- `solve` has the flag and any available writeups.
+- `dist` has what we gave out during the CTF: description and released files.
+- `deploy` has remote deployment files if applicable.
 
-Add any ideas you can think of!
+We're glad everyone enjoyed the CTF! Check us out at Circle City Con 8.0, our bootcamp (beginner oriented CTF) in the fall, or see you next year for the challenge round!
